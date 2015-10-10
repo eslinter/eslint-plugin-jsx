@@ -76,15 +76,21 @@ const noUndefRule = context => {
       var name = node.name
       if (name.type == 'JSXMemberExpression') name = name.object
       if (name.type == 'JSXNamespacedName') name = name.namespace
-      if (standardTags.has(name.name)) return
       const variables = variablesInScope(context)
-      if (findVariable(variables, name.name)) return
-      context.report({
-       message: `'${name.name}' is not defined`,
-       node: name
+      node.attributes.forEach(attr => {
+        if (attr.value == null) checkDefined(context, variables, attr.name)
       })
+      if (!standardTags.has(name.name)) checkDefined(context, variables, name)
     }
   }
+}
+
+const checkDefined = (context, variables, node) => {
+  if (findVariable(variables, node.name)) return
+  context.report({
+    message: `'${node.name}' is not defined`,
+    node: node
+  })
 }
 
 const rules = {
