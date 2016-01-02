@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jsx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JSX specific linting rules for ESLint",
   "main": "built.js",
   "dependencies": {
@@ -8,11 +8,15 @@
     "html-tags": "1",
     "svg-tags": "1"
   },
+  "devDependencies": {
+    "babel-cli": "6",
+    "babel-preset-node": "5"
+  },
   "files": ["index.js", "built.js"],
   "repository": "jkroso/eslint-plugin-jsx",
   "keywords": ["eslint", "plugin", "jsx"],
   "scripts": {
-    "prepublish": "babel index.js > built.js"
+    "prepublish": "babel --presets node index.js > built.js"
   },
   "author": "Jake Rosoman",
   "license": "MIT"
