@@ -16,7 +16,7 @@
   "repository": "jkroso/eslint-plugin-jsx",
   "keywords": ["eslint", "plugin", "jsx"],
   "scripts": {
-    "prepublish": "babel --presets node index.js > built.js"
+    "prepare": "babel --presets node index.js > built.js"
   },
   "author": "Jake Rosoman",
   "license": "MIT"
