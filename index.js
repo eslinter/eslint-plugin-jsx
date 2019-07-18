@@ -72,6 +72,7 @@ const markUsedRule = context => {
 
 const noUndefRule = context => {
   const config = context.options[0] || {}
+  const ignoreAttributes = !!config.ignoreAttributes
   const ignored = config.varsIgnorePattern && new RegExp(config.varsIgnorePattern)
   const isIgnored = ignored
     ? name => ignored.test(name)
@@ -83,10 +84,13 @@ const noUndefRule = context => {
       if (name.type == 'JSXMemberExpression') name = name.object
       if (name.type == 'JSXNamespacedName') name = name.namespace
       const variables = variablesInScope(context)
-      node.attributes.forEach(attr => {
-        if (attr.type == 'JSXSpreadAttribute') return
-        if (attr.value == null && !isIgnored(attr.name.name)) checkDefined(context, variables, attr.name)
-      })
+
+      if (!ignoreAttributes) {
+        node.attributes.forEach(attr => {
+          if (attr.type == 'JSXSpreadAttribute') return
+          if (attr.value == null && !isIgnored(attr.name.name)) checkDefined(context, variables, attr.name)
+        })
+      }
       if (!standardTags.has(name.name) && !isIgnored(name.name)) checkDefined(context, variables, name)
     }
   }
