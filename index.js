@@ -71,6 +71,12 @@ const markUsedRule = context => {
  */
 
 const noUndefRule = context => {
+  const config = context.options[0] || {}
+  const ignored = config.varsIgnorePattern && new RegExp(config.varsIgnorePattern)
+  const isIgnored = ignored
+    ? name => ignored.test(name)
+    : () => false
+
   return {
     JSXOpeningElement(node) {
       var name = node.name
@@ -79,9 +85,9 @@ const noUndefRule = context => {
       const variables = variablesInScope(context)
       node.attributes.forEach(attr => {
         if (attr.type == 'JSXSpreadAttribute') return
-        if (attr.value == null) checkDefined(context, variables, attr.name)
+        if (attr.value == null && !isIgnored(attr.name.name)) checkDefined(context, variables, attr.name)
       })
-      if (!standardTags.has(name.name)) checkDefined(context, variables, name)
+      if (!standardTags.has(name.name) && !isIgnored(name.name)) checkDefined(context, variables, name)
     }
   }
 }

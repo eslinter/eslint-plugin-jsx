@@ -22,6 +22,8 @@ then in your ~/.eslintrc:
 }
 ```
 
+`jsx/no-undef` also accepts a `varsIgnorePattern` which can be used to ignore certain undefined patterns (e.g. when using custom web elements).
+
 All those rules are defined by default though so you can leave out the ones you agree with.
 
 ## Thanks
